@@ -49,39 +49,50 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
     position: relative;
     background: #000;
-    /* Фон-фото заброшки: замени путь ниже на своё фото */
-    /* background-image: url('img/zabroshka.jpg'); */
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: overlay;
+    padding-top: 0;
+    overflow: hidden;
   }
 
-  /* Затемнение поверх фото, чтобы читалось */
-  .hero::after {
+  /* Фото Сони вверху шапки (base64) */
+  .hero-photo {
+    width: 100%;
+    height: 45vh;
+    object-fit: cover;
+    object-position: center 20%;
+    opacity: 0.35;
+    filter: contrast(1.2) brightness(0.8) grayscale(30%) blur(1px);
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Затемнение и плавный переход */
+  .hero::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: 0;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 40%, #000 100%);
+    z-index: 2;
+    pointer-events: none;
   }
-
-  .hero > * { position: relative; z-index: 2; }
 
   /* Пентаграмма за заголовком */
   .pentagram-wrap {
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(30deg);
     width: clamp(300px, 80vw, 700px);
     height: clamp(300px, 80vw, 700px);
-    z-index: 1;
-    opacity: 0.5;
+    z-index: 3;
+    opacity: 0.4;
     pointer-events: none;
   }
 
@@ -90,13 +101,22 @@
   /* Бафомет над пентаграммой */
   .baphomet {
     position: absolute;
-    top: -18%;
+    top: 35%;
     left: 50%;
     transform: translateX(-50%);
     width: clamp(60px, 12vw, 120px);
     opacity: 0.85;
-    z-index: 3;
+    z-index: 4;
     filter: drop-shadow(0 0 10px rgba(204, 0, 0, 0.4));
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -10vh;
   }
 
   .hero h1 {
@@ -231,7 +251,8 @@
     letter-spacing: 0.1em;
     text-align: center;
     padding: 20px;
-    /* Замени на <img src="img/твоё-фото.jpg"> */
+    object-fit: cover;
+    width: 100%;
   }
 
   /* О НАС */
@@ -292,40 +313,38 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 32px;
-    /* Замени на <video controls src="video/lipsing.mp4"> */
+    object-fit: cover;
   }
 
-  /* Плеер-заглушка */
-  .player-stub {
+  /* Ссылки на музыку */
+  .music-links {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
     margin-top: 20px;
-    padding: 20px;
-    background: #000;
-    border: 1px dashed #2a2a2a;
-    color: var(--muted);
-    font-size: 13px;
   }
 
-  .player-track {
+  .music-link {
     display: flex;
     align-items: center;
-    gap: 16px;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: #000;
+    border: 1px solid var(--violet);
+    color: var(--white);
+    text-decoration: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    transition: all 0.2s;
   }
 
-  .player-track .play {
-    width: 40px; height: 40px;
-    border-radius: 50%;
+  .music-link:hover {
     background: var(--violet);
     color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-    box-shadow: 0 0 12px var(--violet-glow);
+    box-shadow: 0 0 20px var(--violet-glow);
   }
+
+  .music-link span { font-weight: 600; }
 
   /* ХРОНИКИ */
   .chronicles {
@@ -339,6 +358,8 @@
     border: 1px solid #1a1a1a;
     overflow: hidden;
     transition: transform 0.2s, border-color 0.2s;
+    display: flex;
+    flex-direction: column;
   }
 
   .chron-card:hover {
@@ -348,8 +369,8 @@
   }
 
   .chron-img {
-    height: 180px;
-    background: linear-gradient(135deg, #0a0a0a, #000);
+    height: 220px;
+    background: #000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -357,9 +378,11 @@
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    object-fit: cover;
+    width: 100%;
   }
 
-  .chron-body { padding: 20px; }
+  .chron-body { padding: 20px; flex-grow: 1; }
 
   .chron-body h3 {
     font-size: 18px;
@@ -393,18 +416,12 @@
   /* РИТУАЛЫ */
   .ritual-photo {
     width: 100%;
-    height: 300px;
+    height: 400px;
     background: #0a0a0a;
     border: 1px dashed var(--blood);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted);
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    display: block;
+    object-fit: cover;
     margin-bottom: 24px;
-    /* Замени на <img src="img/ritual.jpg"> */
   }
 
   .ritual-box {
@@ -425,17 +442,51 @@
     text-shadow: 0 0 10px var(--blood-glow);
   }
 
-  #ritual-text {
+  .ritual-card-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 24px;
+    color: var(--blood);
+    text-shadow: 0 0 15px var(--blood-glow);
+    margin-bottom: 8px;
+  }
+
+  .ritual-card-astro {
+    font-size: 12px;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+  }
+
+  .ritual-scheme {
+    font-size: 14px;
+    color: var(--white);
+    margin-bottom: 24px;
+    line-height: 1.8;
+    text-align: left;
+    background: rgba(255,255,255,0.03);
+    padding: 20px;
+    border-left: 2px solid var(--violet);
+  }
+
+  .ritual-instruction {
     font-family: 'Caveat', cursive;
     font-size: clamp(22px, 4vw, 36px);
     color: var(--white);
-    min-height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    line-height: 1.4;
     margin-bottom: 32px;
-    line-height: 1.3;
+    text-shadow: 0 0 10px rgba(255,255,255,0.1);
   }
+
+  .ritual-source {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 32px;
+  }
+
+  #ritual-container { display: none; margin-bottom: 32px; }
+  #ritual-placeholder { font-family: 'Caveat', cursive; font-size: clamp(22px, 4vw, 36px); color: var(--muted); min-height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 32px; }
 
   /* КАРТА */
   .map-list {
@@ -482,6 +533,19 @@
     margin-top: 32px;
   }
 
+  /* НИЦШЕ ФОТО */
+  .nietzsche-photo {
+    width: clamp(200px, 50vw, 300px);
+    height: auto;
+    margin: 40px auto;
+    display: block;
+    filter: grayscale(100%) contrast(1.5) brightness(0.8);
+    mask-image: radial-gradient(circle, black 50%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(204, 0, 0, 0.3);
+  }
+
   /* ФУТЕР */
   footer {
     text-align: center;
@@ -513,6 +577,9 @@
     .ritual-box { padding: 24px 16px; }
     .video-slot { height: 220px; }
     .photo-slot { height: 240px; }
+    .hero-photo { height: 35vh; }
+    .hero-content { margin-top: -5vh; }
+    .ritual-photo { height: 300px; }
   }
 </style>
 </head>
@@ -520,10 +587,11 @@
 
 <!-- HERO -->
 <section class="hero">
-  <!-- Фон-фото заброшки: раскомментируй и подставь своё -->
-  <!-- <div style="position:absolute; inset:0; background:url('img/zabroshka.jpg') center/cover; z-index:0;"></div> -->
+  
+  <!-- Фото Сони (скрин из видео) -->
+  <img class="hero-photo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" alt="Соня" />
 
-  <!-- Пентаграмма за заголовком -->
+  <!-- Пентаграмма -->
   <div class="pentagram-wrap">
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -532,17 +600,13 @@
           <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
       </defs>
-      <!-- Пятиконечная звезда из «капель» -->
       <g fill="#cc0000" filter="url(#bloodGlow)" opacity="0.9">
-        <!-- Линии-капли по контуру звезды -->
         <path d="M100 10 L120 70 L185 70 L133 105 L152 168 L100 130 L48 168 L67 105 L15 70 L80 70 Z" fill="none" stroke="#cc0000" stroke-width="3"/>
-        <!-- Капли по вершинам -->
         <circle cx="100" cy="15" r="4"/>
         <circle cx="185" cy="68" r="4"/>
         <circle cx="152" cy="168" r="4"/>
         <circle cx="48" cy="168" r="4"/>
         <circle cx="15" cy="68" r="4"/>
-        <!-- Мелкие капли по линиям -->
         <circle cx="110" cy="45" r="2.5"/>
         <circle cx="140" cy="90" r="2.5"/>
         <circle cx="130" cy="140" r="2.5"/>
@@ -552,50 +616,44 @@
         <circle cx="120" cy="110" r="2"/>
         <circle cx="80" cy="120" r="2"/>
       </g>
-      <!-- Внутренний круг (кровавый) -->
       <circle cx="100" cy="100" r="55" fill="none" stroke="#cc0000" stroke-width="1.5" opacity="0.5"/>
     </svg>
   </div>
 
-  <!-- Бафомет над пентаграммой (SVG, стильный) -->
+  <!-- Бафомет -->
   <div class="baphomet">
     <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
       <g fill="none" stroke="#cc0000" stroke-width="2" opacity="0.9">
-        <!-- Голова козла -->
         <path d="M50 20 C35 20 25 30 25 45 C25 60 35 70 50 70 C65 70 75 60 75 45 C75 30 65 20 50 20 Z"/>
-        <!-- Рога -->
         <path d="M30 25 C15 15 10 5 15 0"/>
         <path d="M70 25 C85 15 90 5 85 0"/>
-        <!-- Уши -->
         <path d="M25 40 L10 35"/>
         <path d="M75 40 L90 35"/>
-        <!-- Глаза -->
         <circle cx="40" cy="42" r="3" fill="#cc0000"/>
         <circle cx="60" cy="42" r="3" fill="#cc0000"/>
-        <!-- Нос -->
         <path d="M50 50 L46 58 L54 58 Z" fill="#cc0000" opacity="0.6"/>
-        <!-- Борода -->
         <path d="M50 70 L50 85 M42 70 L38 82 M58 70 L62 82"/>
-        <!-- Пятиконечная звезда на лбу -->
         <path d="M50 30 L52 36 L58 36 L53 40 L55 46 L50 42 L45 46 L47 40 L42 36 L48 36 Z" fill="#cc0000" stroke="none" opacity="0.7"/>
       </g>
     </svg>
   </div>
 
-  <h1>S&amp;S</h1>
-  <p class="sub">Соня и Саня. Хроники заброшек, музыка и ритуалы.</p>
-  <div class="btn-row">
-    <a href="#music" class="btn violet">Слушать Сонюшо</a>
-    <a href="#chronicles" class="btn">Хроники</a>
+  <div class="hero-content">
+    <h1>S&amp;S</h1>
+    <p class="sub">Соня и Саня. Хроники заброшек, музыка и ритуалы.</p>
+    <div class="btn-row">
+      <a href="#music" class="btn violet">Слушать Сонюшо</a>
+      <a href="#chronicles" class="btn">Хроники</a>
+    </div>
+    <p class="micro">Отец и дочь: дружки, ниферы, сатанисты.</p>
   </div>
-  <p class="micro">Отец и дочь: дружки, ниферы, сатанисты.</p>
 </section>
 
 <!-- ДВЕ ФОТКИ ПЕРЕД О НАС -->
 <section style="padding-bottom:0;">
   <div class="photo-row">
-    <div class="photo-slot">[Фото: мы в машине за рулём]</div>
-    <div class="photo-slot">[Фото: мы втроём с котиком]</div>
+    <img class="photo-slot" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" alt="Фото в машине" />
+    <img class="photo-slot" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" alt="Фото с котиком" />
   </div>
 </section>
 
@@ -615,23 +673,20 @@
   <p class="sec-sub">17 лет. Пишет музыку. Мечтает о сцене.</p>
 
   <!-- Видео-заглушка -->
-  <div class="video-slot">[Видео: липсинг Сони — вставь &lt;video&gt;]</div>
+  <div class="video-slot">[Видео: липсинг Сони]</div>
 
   <div class="music-card">
     <h3>Треки</h3>
     <p style="color:var(--muted); font-size:14px;">Сонюшо — это Соня.</p>
-    <div class="player-stub">
-      <div class="player-track">
-        <div class="play">▶</div>
-        <span>Трек 1 — [название] (mp3)</span>
-      </div>
-      <div class="player-track">
-        <div class="play">▶</div>
-        <span>Трек 2 — [название] (mp3)</span>
-      </div>
-    </div>
-    <div class="btn-row" style="margin-top:24px;">
-      <a href="#" class="btn violet">Слушать на стримингах</a>
+    <div class="music-links">
+      <a href="https://music.yandex.ru/album/39260635/track/145309683" target="_blank" class="music-link">
+        <span>Трек 1</span>
+        <span>Слушать на Яндекс.Музыке →</span>
+      </a>
+      <a href="https://music.yandex.ru/album/37838407/track/141962173" target="_blank" class="music-link">
+        <span>Трек 2</span>
+        <span>Слушать на Яндекс.Музыке →</span>
+      </a>
     </div>
   </div>
 </section>
@@ -642,7 +697,7 @@
   <p class="sec-sub">Заброшки, караоке, концерты, ритуалы. Всё, что мы пережили вместе.</p>
   <div class="chronicles">
     <div class="chron-card">
-      <div class="chron-img">[Фото: заброшка]</div>
+      <div class="chron-img" style="background:#0a0a0a; border-bottom:1px solid #1a1a1a;">[Видео: бадди-муви]</div>
       <div class="chron-body">
         <h3>Бадди-муви про заброшки</h3>
         <p>Сняли с Соней фильм о том, как мы шаримся по заброшкам. Без сценария, без дублей. Только мы, камера и ржавчина.</p>
@@ -650,7 +705,7 @@
       </div>
     </div>
     <div class="chron-card">
-      <div class="chron-img">[Фото: караоке]</div>
+      <div class="chron-img" style="background:#0a0a0a; border-bottom:1px solid #1a1a1a;">[Видео: караоке]</div>
       <div class="chron-body">
         <h3>Караоке до утра</h3>
         <p>Саня не умеет петь. Соня умеет. Но поём оба.</p>
@@ -658,7 +713,7 @@
       </div>
     </div>
     <div class="chron-card">
-      <div class="chron-img">[Фото: концерт]</div>
+      <img class="chron-img" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" alt="Ситников" />
       <div class="chron-body">
         <h3>Идём на Ситникова</h3>
         <p>Соня обожает питерскую группу «Птицу Емъ» и её фронтмена Ситникова. Мы вместе идём на концерт Ситникова.</p>
@@ -666,7 +721,7 @@
       </div>
     </div>
     <div class="chron-card">
-      <div class="chron-img">[Фото: ритуалы]</div>
+      <img class="chron-img" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" alt="Ритуал с подругой" />
       <div class="chron-body">
         <h3>Ритуалы с подругами</h3>
         <p>У нас есть лор с двумя её подругами. Проводим нешуточные магические обряды. Всё работает.</p>
@@ -684,11 +739,18 @@
   <h2 class="sec-title">Книга ритуалов</h2>
   <p class="sec-sub">Нешуточные ритуалы. Работают.</p>
 
-  <!-- Фото ритуала -->
-  <div class="ritual-photo">[Фото: вчерашний ритуал]</div>
+  <!-- Коллаж (заглушка, пока одну фотку) -->
+  <img class="ritual-photo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" alt="Ритуал" />
 
   <div class="ritual-box">
-    <div id="ritual-text">Нажми на кнопку — получишь ритуал.</div>
+    <div id="ritual-placeholder">Нажми на кнопку — получишь ритуал.</div>
+    <div id="ritual-container">
+      <div class="ritual-card-title" id="r-title"></div>
+      <div class="ritual-card-astro" id="r-astro"></div>
+      <div class="ritual-scheme" id="r-scheme"></div>
+      <div class="ritual-instruction" id="r-instruction"></div>
+      <div class="ritual-source">— На основе книги «Искусство импровизационной техномагии»</div>
+    </div>
     <button class="btn" onclick="generateRitual()">Сгенерировать ритуал</button>
   </div>
 </section>
@@ -708,6 +770,7 @@
 <section class="nietzsche">
   <blockquote>«Что не убивает нас, делает нас заброшками.»</blockquote>
   <p class="sign">— Ницше, наверное</p>
+  <img class="nietzsche-photo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" alt="Ницше" />
   <p class="micro">Соня любит «Птицу Емъ». Ситников любит Ницше. Все любят Соню. Всё сходится.</p>
 </section>
 
@@ -715,34 +778,122 @@
 <footer>
   <div class="logo">S&amp;S</div>
   <p>Соня и Саня. Хроники, музыка, ритуалы.</p>
-  <p style="margin-top:16px;">Сонюшо: <a href="#">стриминги</a> · Telegram: <a href="#">канал</a></p>
+  <p style="margin-top:16px;">Сонюшо: <a href="https://music.yandex.ru/album/39260635/track/145309683" target="_blank">Яндекс.Музыка</a> · Telegram: <a href="#">канал</a></p>
   <p class="copy">S&amp;S, 2026</p>
 </footer>
 
 <script>
-  const rituals = [
-    "О Ницше, дай мне сил не сойти с ума до пятницы.",
-    "Три раза обойди ржавую ванну и скажи «Сонюшо».",
-    "Спой припев «Птицу Емъ» в машине, не сбившись.",
-    "Напиши первым через 2,5 месяца.",
-    "Смотри в бетонную стену 10 минут. Потом пиши трек.",
-    "Съешь шаурму на заброшке. Это считается.",
-    "Включи Сонюшо на полную громкость и не думай о дедлайнах.",
-    "Проведи ритуал с двумя подругами. Если подруг нет — заведи.",
-    "Пройди 10 тысяч шагов по ржавым рельсам. Загадай желание.",
-    "Скажи «нет шансов» три раза. Потом улыбнись."
-  ];
+const rituals = [
+  // Старшие Арканы (Эфир)
+  { title: "0. Шут", element: "Эфир", astro: "Уран", intent: "начать с нуля", gesture: "сделай шаг вперёд с закрытыми глазами", object: "пустота", word: "«Начинаю»", instruction: "Закрой глаза. Сделай шаг в неизвестность. Скажи «Начинаю». Открой глаза. Импровизация начинается с готовности упасть." },
+  { title: "I. Маг", element: "Эфир", astro: "Меркурий", intent: "собрать волю в точку", gesture: "укажи пальцем на предмет", object: "любой", word: "«Я делаю»", instruction: "Выбери любой предмет. Укажи на него пальцем. Скажи «Я делаю». Опусти руку. Воля без театра — самая сильная." },
+  { title: "II. Жрица", element: "Эфир", astro: "Луна", intent: "услышать внутренний ритм", gesture: "приложи палец к губам", object: "тишина", word: "(молчание)", instruction: "Приложи палец к губам. Замри. Не нарушай тишину 10 секунд. Тишина — это инструмент." },
+  { title: "III. Императрица", element: "Эфир", astro: "Венера", intent: "почувствовать рост", gesture: "полей любое растение или коснись земли", object: "земля/вода", word: "«Растёт»", instruction: "Найди растение или просто коснись земли. Полей его (или представь, что поливаешь). Скажи «Растёт». Оставь на месте. Форма должна питать." },
+  { title: "IV. Император", element: "Эфир", astro: "Овен", intent: "выстроить границу", gesture: "поставь предмет ровно по краю стола", object: "линейка/край", word: "«Здесь предел»", instruction: "Возьми любой предмет. Поставь его ровно по краю стола. Скажи «Здесь предел». Не двигай. Структура — это свобода." },
+  { title: "V. Иерофант", element: "Эфир", astro: "Телец", intent: "настроить реальность", gesture: "произнеси короткую формулу шёпотом", object: "нет", word: "«Слово — это действие»", instruction: "Придумай короткую фразу (3-4 слова). Произнеси её шёпотом. Не повторяй. Формула должна звучать один раз." },
+  { title: "VI. Влюблённые", element: "Эфир", astro: "Близнецы", intent: "сделать выбор", gesture: "возьми два предмета в руки", object: "два варианта", word: "«Выбираю»", instruction: "Возьми два предмета в руки. Подержи. Скажи «Выбираю». Оставь один, второй убери. Смысл в отказе от лишнего." },
+  { title: "VII. Колесница", element: "Эфир", astro: "Рак", intent: "сдвинуться с места", gesture: "сделай три шага вперёд", object: "пол под ногами", word: "«Еду»", instruction: "Сделай три шага вперёд. Скажи «Еду». Остановись. Траектория важнее скорости." },
+  { title: "VIII. Сила", element: "Эфир", astro: "Лев", intent: "обуздать хаос", gesture: "сожми кулак и медленно разожми", object: "собственные руки", word: "«Я держу»", instruction: "Сожми кулак. Медленно разожми. Скажи «Я держу». Выдохни. Сила — это контроль, а не напор." },
+  { title: "IX. Отшельник", element: "Эфир", astro: "Дева", intent: "остаться наедине с собой", gesture: "выключи свет и постой в темноте", object: "темнота", word: "«Я здесь»", instruction: "Выключи свет. Постой в темноте. Скажи «Я здесь». Включи свет. В темноте рождается точность." },
+  { title: "X. Колесо Фортуны", element: "Эфир", astro: "Юпитер", intent: "довериться потоку", gesture: "подбрось монету", object: "монета", word: "«Пусть будет»", instruction: "Подбрось монету. Скажи «Пусть будет». Не спорь с результатом. Импровизация любит случай." },
+  { title: "XI. Справедливость", element: "Эфир", astro: "Весы", intent: "уравновесить", gesture: "положи два предмета на равном расстоянии", object: "два одинаковых", word: "«Ровно»", instruction: "Положи два предмета на равном расстоянии. Скажи «Ровно». Не двигай. Точность — это баланс." },
+  { title: "XII. Повешенный", element: "Эфир", astro: "Нептун", intent: "остановиться", gesture: "замри в неудобной позе на 30 секунд", object: "тело", word: "«Пауза»", instruction: "Замри в неудобной позе. Постой 30 секунд. Скажи «Пауза». Расслабься. Сбой — часть практики." },
+  { title: "XIII. Смерть", element: "Эфир", astro: "Скорпион", intent: "закрыть гештальт", gesture: "скомкай бумагу и выбрось", object: "бумага", word: "«Конец»", instruction: "Возьми лист бумаги. Скомкай его. Выбрось. Скажи «Конец». Не поднимай. Смерть формы даёт жизнь новой." },
+  { title: "XIV. Умеренность", element: "Эфир", astro: "Стрелец", intent: "соединить несочетаемое", gesture: "смешай две жидкости или два цвета", object: "два элемента", word: "«Едино»", instruction: "Смешай две жидкости (или два цвета). Скажи «Едино». Посмотри на результат. Эклектика без хаоса." },
+  { title: "XV. Дьявол", element: "Эфир", astro: "Козерог", intent: "встретиться с тенью", gesture: "посмотри на свою тень на стене", object: "тень", word: "«Вижу»", instruction: "Найди свою тень на стене. Посмотри на неё. Скажи «Вижу». Отвернись. Чёрное — это режим, а не зло." },
+  { title: "XVI. Башня", element: "Эфир", astro: "Марс", intent: "сломать старое", gesture: "разрушь построенное из спичек/карт", object: "хрупкая конструкция", word: "«Рушится»", instruction: "Построй что-то хрупкое (из спичек или карт). Разрушь. Скажи «Рушится». Не собирай. Разрушение — это очищение." },
+  { title: "XVII. Звезда", element: "Эфир", astro: "Водолей", intent: "загадать", gesture: "посмотри на любую звезду (или точку света)", object: "свет", word: "«Будет»", instruction: "Найди точку света (звезду, лампу). Посмотри на неё. Скажи «Будет». Закрой глаза. Надежда — это форма." },
+  { title: "XVIII. Луна", element: "Эфир", astro: "Рыбы", intent: "увидеть скрытое", gesture: "посмотри на отражение в тёмном стекле", object: "стекло", word: "«Туман»", instruction: "Найди тёмное стекло (окно). Посмотри на отражение. Скажи «Туман». Отойди. Не всё то, чем кажется." },
+  { title: "XIX. Солнце", element: "Эфир", astro: "Солнце", intent: "увидеть правду", gesture: "посмотри на свет 10 секунд", object: "свет", word: "«Ясно»", instruction: "Посмотри на свет 10 секунд. Скажи «Ясно». Закрой глаза. Ясность — это сила." },
+  { title: "XX. Суд", element: "Эфир", astro: "Плутон", intent: "услышать зов", gesture: "резко обернись", object: "звук", word: "«Просыпаюсь»", instruction: "Замри в тишине. Прислушайся. Резко обернись. Издай звук (хлопок, щелчок). Скажи громко «Просыпаюсь». Снова замри. Магия начинается с пробуждения." },
+  { title: "XXI. Мир", element: "Эфир", astro: "Сатурн", intent: "почувствовать целостность", gesture: "обведи руками круг вокруг себя", object: "пространство", word: "«Цело»", instruction: "Обведи руками круг вокруг себя. Скажи «Цело». Выдохни. Форма, которая не врёт." },
+  // Жезлы (Огонь)
+  { title: "Туз Жезлов", element: "Огонь", astro: "Овен", intent: "зажечь идею", gesture: "чиркни зажигалкой, но не зажигай свечу", object: "зажигалка", word: "«Искра»", instruction: "Чиркни зажигалкой. Не зажигай свечу. Скажи «Искра». Убери. Потенциал важнее действия." },
+  { title: "2 Жезлов", element: "Огонь", astro: "Марс в Овне", intent: "увидеть два пути", gesture: "встань между двумя дверями/предметами", object: "выбор", word: "«Дальше»", instruction: "Встань между двумя дверями (или предметами). Посмотри на оба. Скажи «Дальше». Сделай шаг. Путь начинается с шага." },
+  { title: "3 Жезлов", element: "Огонь", astro: "Солнце в Овне", intent: "расширить взгляд", gesture: "посмотри в окно/даль", object: "окно", word: "«Вижу»", instruction: "Подойди к окну. Посмотри вдаль. Скажи «Вижу». Отвернись. Горизонт — это приглашение." },
+  { title: "4 Жезлов", element: "Огонь", astro: "Венера в Овне", intent: "почувствовать опору", gesture: "коснись стены", object: "стена", word: "«Дом»", instruction: "Коснись стены. Почувствуй её. Скажи «Дом». Отойди. Опора внутри." },
+  { title: "5 Жезлов", element: "Огонь", astro: "Сатурн во Льве", intent: "столкнуться с хаосом", gesture: "скомкай несколько бумаг", object: "бумага", word: "«Шум»", instruction: "Скомкай несколько бумаг. Скажи «Шум». Выбрось. Хаос можно использовать." },
+  { title: "6 Жезлов", element: "Огонь", astro: "Юпитер во Льве", intent: "зафиксировать успех", gesture: "подними предмет вверх", object: "любой", word: "«Есть»", instruction: "Подними предмет вверх. Скажи «Есть». Опусти. Победа — это точка." },
+  { title: "7 Жезлов", element: "Огонь", astro: "Марс во Льве", intent: "удержать позицию", gesture: "скрести руки на груди", object: "тело", word: "«Стою»", instruction: "Скрести руки на груди. Постой. Скажи «Стою». Расслабь. Защита — это форма." },
+  { title: "8 Жезлов", element: "Огонь", astro: "Меркурий в Стрельце", intent: "ускориться", gesture: "сделай быстрое движение рукой", object: "воздух", word: "«Быстро»", instruction: "Сделай быстрое движение рукой. Скажи «Быстро». Замри. Скорость требует точности." },
+  { title: "9 Жезлов", element: "Огонь", astro: "Луна в Стрельце", intent: "выдержать", gesture: "постой на одной ноге 15 секунд", object: "баланс", word: "«Держусь»", instruction: "Постой на одной ноге 15 секунд. Скажи «Держусь». Опусти ногу. Выносливость — это ритм." },
+  { title: "10 Жезлов", element: "Огонь", astro: "Сатурн в Стрельце", intent: "отпустить лишнее", gesture: "возьми тяжёлый предмет и положи", object: "тяжесть", word: "«Хватит»", instruction: "Возьми тяжёлый предмет. Положи его. Скажи «Хватит». Не поднимай. Ноша не нужна." },
+  { title: "Паж Жезлов", element: "Огонь", astro: "Огонь Огня", intent: "попробовать впервые", gesture: "сделай что-то, что не делал раньше", object: "новое", word: "«Пробую»", instruction: "Сделай что-то, чего никогда не делал. Скажи «Пробую». Не оценивай. Опыт важнее результата." },
+  { title: "Рыцарь Жезлов", element: "Огонь", astro: "Воздух Огня", intent: "действовать смело", gesture: "резко встань", object: "тело", word: "«Вперёд»", instruction: "Резко встань. Скажи «Вперёд». Сядь. Смелость — это импульс." },
+  { title: "Королева Жезлов", element: "Огонь", astro: "Вода Огня", intent: "заявить о себе", gesture: "посмотри в зеркало и улыбнись", object: "зеркало", word: "«Я есть»", instruction: "Посмотри в зеркало. Улыбнись. Скажи «Я есть». Отвернись. Харизма — это уверенность." },
+  { title: "Король Жезлов", element: "Огонь", astro: "Огонь Огня", intent: "взять ответственность", gesture: "положи руку на сердце", object: "сердце", word: "«Веду»", instruction: "Положи руку на сердце. Скажи «Веду». Убери руку. Лидерство — это форма." },
+  // Чаши (Вода)
+  { title: "Туз Чаш", element: "Вода", astro: "Рак", intent: "открыть сердце", gesture: "приложи руку к груди", object: "сердце", word: "«Открыт»", instruction: "Приложи руку к груди. Скажи «Открыт». Выдохни. Любовь — это форма." },
+  { title: "2 Чаш", element: "Вода", astro: "Венера в Раке", intent: "почувствовать связь", gesture: "возьми два предмета и соедини", object: "два", word: "«Вместе»", instruction: "Возьми два предмета. Соедини их. Скажи «Вместе». Оставь. Связь — это сила." },
+  { title: "3 Чаш", element: "Вода", astro: "Меркурий в Раке", intent: "разделить радость", gesture: "улыбнись и подними руки", object: "нет", word: "«Радость»", instruction: "Улыбнись. Подними руки. Скажи «Радость». Опусти. Радость — это ритм." },
+  { title: "4 Чаш", element: "Вода", astro: "Луна в Раке", intent: "увидеть новое в привычном", gesture: "посмотри на предмет 30 секунд", object: "любой", word: "«Вижу»", instruction: "Посмотри на любой предмет 30 секунд. Скажи «Вижу». Отвернись. Скука — это пауза." },
+  { title: "5 Чаш", element: "Вода", astro: "Марс в Скорпионе", intent: "принять утрату", gesture: "выбрось что-то ненужное", object: "мусор", word: "«Прощай»", instruction: "Найди что-то ненужное. Выбрось. Скажи «Прощай». Не поднимай. Потеря — это место для нового." },
+  { title: "6 Чаш", element: "Вода", astro: "Солнце в Скорпионе", intent: "вернуться в прошлое", gesture: "закрой глаза и вспомни момент", object: "память", word: "«Помню»", instruction: "Закрой глаза. Вспомни хороший момент. Скажи «Помню». Открой глаза. Память — это опора." },
+  { title: "7 Чаш", element: "Вода", astro: "Венера в Скорпионе", intent: "увидеть туман", gesture: "посмотри на отражение в ложке", object: "ложка", word: "«Туман»", instruction: "Посмотри на отражение в ложке. Скажи «Туман». Отойди. Иллюзия — это урок." },
+  { title: "8 Чаш", element: "Вода", astro: "Сатурн в Рыбах", intent: "уйти от старого", gesture: "сделай шаг назад", object: "пространство", word: "«Ухожу»", instruction: "Сделай шаг назад. Скажи «Ухожу». Не оглядывайся. Уход — это сила." },
+  { title: "9 Чаш", element: "Вода", astro: "Юпитер в Рыбах", intent: "почувствовать желание", gesture: "загадай и хлопни в ладоши", object: "нет", word: "«Есть»", instruction: "Загадай желание. Хлопни в ладоши. Скажи «Есть». Выдохни. Желание — это форма." },
+  { title: "10 Чаш", element: "Вода", astro: "Марс в Рыбах", intent: "почувствовать целостность", gesture: "обними себя", object: "тело", word: "«Цело»", instruction: "Обними себя. Скажи «Цело». Отпусти. Гармония — это баланс." },
+  { title: "Паж Чаш", element: "Вода", astro: "Вода Воды", intent: "помечтать", gesture: "закрой глаза и представь", object: "воображение", word: "«Мечтаю»", instruction: "Закрой глаза. Представь желаемое. Скажи «Мечтаю». Открой глаза. Мечта — это навигатор." },
+  { title: "Рыцарь Чаш", element: "Вода", astro: "Воздух Воды", intent: "почувствовать красоту", gesture: "посмотри на что-то красивое", object: "красота", word: "«Красиво»", instruction: "Найди что-то красивое. Посмотри. Скажи «Красиво». Отвернись. Красота — это сила." },
+  { title: "Королева Чаш", element: "Вода", astro: "Вода Воды", intent: "почувствовать другого", gesture: "приложи руку к сердцу другого (или своему)", object: "сердце", word: "«Чувствую»", instruction: "Приложи руку к сердцу (своему или другого). Скажи «Чувствую». Убери. Эмпатия — это форма." },
+  { title: "Король Чаш", element: "Вода", astro: "Огонь Воды", intent: "сохранить спокойствие", gesture: "сделай глубокий вдох и выдох", object: "дыхание", word: "«Спокоен»", instruction: "Сделай глубокий вдох. Выдох. Скажи «Спокоен». Открой глаза. Мудрость — это тишина." },
+  // Мечи (Воздух)
+  { title: "Туз Мечей", element: "Воздух", astro: "Близнецы", intent: "увидеть правду", gesture: "разрежь воздух рукой", object: "воздух", word: "«Ясно»", instruction: "Разрежь воздух рукой. Скажи «Ясно». Опусти. Ясность — это меч." },
+  { title: "2 Мечей", element: "Воздух", astro: "Луна в Весах", intent: "принять решение", gesture: "скрести два предмета", object: "два", word: "«Выбор»", instruction: "Скрести два предмета. Скажи «Выбор». Разъедини. Выбор — это сила." },
+  { title: "3 Мечей", element: "Воздух", astro: "Сатурн в Весах", intent: "принять боль", gesture: "сожми зубы на 5 секунд", object: "тело", word: "«Чувствую»", instruction: "Сожми зубы на 5 секунд. Скажи «Чувствую». Расслабь. Боль — это урок." },
+  { title: "4 Мечей", element: "Воздух", astro: "Юпитер в Весах", intent: "восстановиться", gesture: "закрой глаза на 1 минуту", object: "тишина", word: "«Отдых»", instruction: "Закрой глаза на минуту. Скажи «Отдых». Открой глаза. Отдых — это форма." },
+  { title: "5 Мечей", element: "Воздух", astro: "Венера в Водолее", intent: "увидеть поражение", gesture: "отступи на шаг", object: "пространство", word: "«Проиграл»", instruction: "Отступи на шаг. Скажи «Проиграл». Не спорь. Поражение — это опыт." },
+  { title: "6 Мечей", element: "Воздух", astro: "Меркурий в Водолее", intent: "сменить состояние", gesture: "переступи через порог", object: "порог", word: "«Перехожу»", instruction: "Переступи через порог. Скажи «Перехожу». Не оглядывайся. Переход — это сила." },
+  { title: "7 Мечей", element: "Воздух", astro: "Луна в Водолее", intent: "увидеть обман", gesture: "спрячь предмет за спину", object: "любой", word: "«Скрыто»", instruction: "Спрячь предмет за спину. Скажи «Скрыто». Покажи. Хитрость — это инструмент." },
+  { title: "8 Мечей", element: "Воздух", astro: "Юпитер в Близнецах", intent: "увидеть рамки", gesture: "обведи себя руками", object: "тело", word: "«Границы»", instruction: "Обведи себя руками. Скажи «Границы». Разомкни. Ограничения — это иллюзия." },
+  { title: "9 Мечей", element: "Воздух", astro: "Марс в Близнецах", intent: "встретиться со страхом", gesture: "посмотри в темноту", object: "темнота", word: "«Страх»", instruction: "Посмотри в темноту. Скажи «Страх». Включи свет. Страх — это тень." },
+  { title: "10 Мечей", element: "Воздух", astro: "Солнце в Близнецах", intent: "завершить цикл", gesture: "положи предмет и уйди", object: "любой", word: "«Конец»", instruction: "Положи предмет. Уйди. Скажи «Конец». Не возвращайся. Конец — это начало." },
+  { title: "Паж Мечей", element: "Воздух", astro: "Воздух Воздуха", intent: "узнать новое", gesture: "задай вопрос", object: "нет", word: "«Почему?»", instruction: "Задай вопрос. Скажи «Почему?». Выслушай ответ. Любопытство — это двигатель." },
+  { title: "Рыцарь Мечей", element: "Воздух", astro: "Огонь Воздуха", intent: "действовать быстро", gesture: "сделай резкое движение", object: "воздух", word: "«Быстро»", instruction: "Сделай резкое движение. Скажи «Быстро». Замри. Скорость — это форма." },
+  { title: "Королева Мечей", element: "Воздух", astro: "Вода Воздуха", intent: "быть одной", gesture: "отойди в сторону", object: "пространство", word: "«Сама»", instruction: "Отойди в сторону. Скажи «Сама». Вернись. Независимость — это сила." },
+  { title: "Король Мечей", element: "Воздух", astro: "Воздух Воздуха", intent: "заявить права", gesture: "посмотри в глаза отражению", object: "зеркало", word: "«Я»", instruction: "Посмотри в глаза отражению. Скажи «Я». Отвернись. Авторитет — это уверенность." },
+  // Пентакли (Земля)
+  { title: "Туз Пентаклей", element: "Земля", astro: "Телец", intent: "посадить семя", gesture: "положи монету на землю/стол", object: "монета", word: "«Начало»", instruction: "Положи монету на землю или стол. Скажи «Начало». Не убирай. Начало — это форма." },
+  { title: "2 Пентаклей", element: "Земля", astro: "Юпитер в Козероге", intent: "удержать равновесие", gesture: "подбрось два предмета", object: "два", word: "«Баланс»", instruction: "Подбрось два предмета. Скажи «Баланс». Поймай. Баланс — это искусство." },
+  { title: "3 Пентаклей", element: "Земля", astro: "Марс в Козероге", intent: "создать что-то", gesture: "построй что-то из подручного", object: "материалы", word: "«Делаю»", instruction: "Построй что-то из подручных материалов. Скажи «Делаю». Посмотри. Работа — это магия." },
+  { title: "4 Пентаклей", element: "Земля", astro: "Солнце в Козероге", intent: "удержать ресурс", gesture: "сожми монету в кулаке", object: "монета", word: "«Моё»", instruction: "Сожми монету в кулаке. Скажи «Моё». Разожми. Сохранение — это сила." },
+  { title: "5 Пентаклей", element: "Земля", astro: "Меркурий в Тельце", intent: "увидеть нехватку", gesture: "посмотри на пустой кошелёк", object: "пустота", word: "«Нужда»", instruction: "Посмотри на пустой кошелёк. Скажи «Нужда». Убери. Нужда — это урок." },
+  { title: "6 Пентаклей", element: "Земля", astro: "Луна в Тельце", intent: "отдать", gesture: "отдай монету/предмет", object: "дар", word: "«Делюсь»", instruction: "Отдай монету или предмет. Скажи «Делюсь». Не жди возврата. Щедрость — это форма." },
+  { title: "7 Пентаклей", element: "Земля", astro: "Сатурн в Тельце", intent: "дождаться результата", gesture: "постой и посмотри на часы", object: "время", word: "«Жду»", instruction: "Постой. Посмотри на часы. Скажи «Жду». Отвернись. Терпение — это сила." },
+  { title: "8 Пентаклей", element: "Земля", astro: "Солнце в Деве", intent: "отточить навык", gesture: "повтори одно движение 10 раз", object: "повторение", word: "«Учусь»", instruction: "Повтори одно движение 10 раз. Скажи «Учусь». Остановись. Мастерство — это ритм." },
+  { title: "9 Пентаклей", element: "Земля", astro: "Венера в Деве", intent: "почувствовать достаток", gesture: "посмотри на то, что имеешь", object: "имущество", word: "«Достаточно»", instruction: "Посмотри на то, что имеешь. Скажи «Достаточно». Отвернись. Изобилие — это взгляд." },
+  { title: "10 Пентаклей", element: "Земля", astro: "Меркурий в Деве", intent: "почувствовать связь поколений", gesture: "коснись семейной вещи/фото", object: "память", word: "«Род»", instruction: "Коснись семейной вещи или фото. Скажи «Род». Отойди. Наследие — это опора." },
+  { title: "Паж Пентаклей", element: "Земля", astro: "Земля Земли", intent: "начать учиться", gesture: "открой книгу/тетрадь", object: "знания", word: "«Учу»", instruction: "Открой книгу или тетрадь. Скажи «Учу». Закрой. Учение — это путь." },
+  { title: "Рыцарь Пентаклей", element: "Земля", astro: "Воздух Земли", intent: "укрепить позиции", gesture: "встань на обе ноги твёрдо", object: "земля", word: "«Стою»", instruction: "Встань на обе ноги твёрдо. Скажи «Стою». Не двигайся. Стабильность — это сила." },
+  { title: "Королева Пентаклей", element: "Земля", astro: "Вода Земли", intent: "позаботиться о себе", gesture: "выпей воды/съешь что-то", object: "пища", word: "«Забота»", instruction: "Выпей воды или съешь что-то. Скажи «Забота». Поблагодари. Забота — это магия." },
+  { title: "Король Пентаклей", element: "Земля", astro: "Огонь Земли", intent: "взять контроль", gesture: "положи руку на стол", object: "поверхность", word: "«Власть»", instruction: "Положи руку на стол. Скажи «Власть». Убери. Власть — это ответственность." }
+];
 
-  function generateRitual() {
-    const el = document.getElementById('ritual-text');
-    const random = rituals[Math.floor(Math.random() * rituals.length)];
-    el.style.opacity = 0;
-    setTimeout(() => {
-      el.textContent = random;
-      el.style.transition = 'opacity 0.4s';
-      el.style.opacity = 1;
-    }, 150);
-  }
+function generateRitual() {
+  const placeholder = document.getElementById('ritual-placeholder');
+  const container = document.getElementById('ritual-container');
+  
+  const random = rituals[Math.floor(Math.random() * rituals.length)];
+  
+  document.getElementById('r-title').textContent = random.title;
+  document.getElementById('r-astro').textContent = `Стихия: ${random.element} | Астрология: ${random.astro}`;
+  document.getElementById('r-scheme').innerHTML = `
+    <strong>Намерение:</strong> ${random.intent}.<br>
+    <strong>Жест:</strong> ${random.gesture}.<br>
+    <strong>Предмет:</strong> ${random.object}.<br>
+    <strong>Слово:</strong> ${random.word}.
+  `;
+  document.getElementById('r-instruction').textContent = random.instruction;
+  
+  placeholder.style.display = 'none';
+  container.style.display = 'block';
+  container.style.opacity = 0;
+  
+  setTimeout(() => {
+    container.style.transition = 'opacity 0.5s';
+    container.style.opacity = 1;
+  }, 50);
+}
 </script>
 
 </body>
