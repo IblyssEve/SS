@@ -49,50 +49,47 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center; /* Центрируем контент по вертикали */
     align-items: center;
     text-align: center;
     position: relative;
     background: #000;
-    padding-top: 0;
     overflow: hidden;
   }
 
-  /* Фото Сони вверху шапки (текстура) */
-  .hero-photo {
-    width: 100%;
-    height: 45vh;
+  /* Фото Сони как фон всей шапки */
+  .hero-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     object-fit: cover;
     object-position: center 20%;
-    opacity: 0.35;
-    filter: contrast(1.2) brightness(0.8) grayscale(30%) blur(1px);
-    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-    position: relative;
+    opacity: 0.4; /* Прозрачность, чтобы не перебивать текст */
+    filter: contrast(1.2) brightness(0.7) grayscale(20%);
     z-index: 1;
   }
 
-  /* Затемнение и плавный переход */
+  /* Затемняющий градиент поверх фона */
   .hero::before {
     content: '';
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 40%, #000 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 50%, #000 100%);
     z-index: 2;
     pointer-events: none;
   }
 
-  /* Пентаграмма за заголовком в шапке */
+  /* Пентаграмма в шапке */
   .pentagram-wrap {
     position: absolute;
-    top: 55%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(30deg);
     width: clamp(300px, 80vw, 700px);
     height: clamp(300px, 80vw, 700px);
     z-index: 3;
-    opacity: 0.4;
+    opacity: 0.3; /* Чуть прозрачнее, так как теперь на фоне */
     pointer-events: none;
   }
 
@@ -101,7 +98,7 @@
   /* Бафомет над пентаграммой */
   .baphomet {
     position: absolute;
-    top: 35%;
+    top: 25%; /* Поднял выше, чтобы не наезжал на заголовок */
     left: 50%;
     transform: translateX(-50%);
     width: clamp(60px, 12vw, 120px);
@@ -116,7 +113,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: -10vh;
   }
 
   .hero h1 {
@@ -273,15 +269,16 @@
     overflow: hidden;
   }
 
+  /* Пентаграмма подтянута вверх и чуть ярче */
   .music-pentagram-bg {
     position: absolute;
-    top: 50%;
+    top: 30%; /* Сдвинута вверх */
     left: 50%;
     transform: translate(-50%, -50%) rotate(15deg);
     width: clamp(400px, 90vw, 900px);
     height: clamp(400px, 90vw, 900px);
     z-index: 0;
-    opacity: 0.15;
+    opacity: 0.25; /* Поярче, чем было (было 0.15) */
     pointer-events: none;
   }
 
@@ -451,10 +448,11 @@
   }
 
   /* РИТУАЛЫ */
+  /* Коллаж теперь показывается целиком (contain), без обрезки */
   .ritual-photo {
     width: 100%;
-    max-height: 500px;
-    object-fit: cover;
+    max-height: 80vh;
+    object-fit: contain;
     border: 1px solid #1a1a1a;
     display: block;
     margin-bottom: 24px;
@@ -559,11 +557,13 @@
     box-shadow: 0 0 40px rgba(204, 0, 0, 0.3);
   }
 
+  /* Текст под Ницше крупнее и ярче */
   .nietzsche .micro {
     color: var(--blood);
-    text-shadow: 0 0 10px var(--blood-glow);
-    font-size: 13px;
+    text-shadow: 0 0 15px var(--blood-glow), 0 0 30px var(--blood-glow); /* Добавлено свечение */
+    font-size: clamp(16px, 3vw, 22px); /* Увеличен размер */
     margin-top: 32px;
+    font-weight: 600;
   }
 
   /* ФУТЕР */
@@ -596,9 +596,8 @@
     .btn { padding: 12px 20px; font-size: 12px; }
     .ritual-box { padding: 24px 16px; }
     .photo-slot { height: 280px; }
-    .hero-photo { height: 35vh; }
-    .hero-content { margin-top: -5vh; }
-    .ritual-photo { max-height: 300px; }
+    .hero-content { margin-top: 0; }
+    .ritual-photo { max-height: 60vh; }
   }
 </style>
 </head>
@@ -606,8 +605,8 @@
 
 <!-- HERO -->
 <section class="hero">
-  <!-- Фон (Соня на заброшке) -->
-  <img class="hero-photo" src="IMG_20261029_170713_894.jpg" alt="Соня на заброшке" />
+  <!-- Фон (Соня на заброшке) на всю шапку -->
+  <img class="hero-bg" src="IMG_20261029_170713_894.jpg" alt="Соня на заброшке" />
 
   <!-- Пентаграмма -->
   <div class="pentagram-wrap">
@@ -668,7 +667,7 @@
 <section id="about">
   <h2 class="sec-title">О нас</h2>
   <div class="about-text">
-    <p>Мы — Саня и Соня. Я её отец и друг. У Сони <span class="accent">два отца</span>: один формальный, другой — родной. Это я. Так уж вышло, и все всё знают.</p>
+    <p>Мы — Саня и Соня. Я её отец и друг. У Сони <span class="accent">два отца</span>: один формальный по паспорту, но зато настоящий заботливый папа, а другой — нифер и распиздяй, правда родной. Это который я. Так уж вышло, и все всё знают.</p>
     <p>Мы вместе снимаем бадди-муви про заброшки, ходим в караоке, поём за рулём. У нас есть лор с двумя её подругами — проводим <span class="accent">нешуточные</span> магические ритуалы. Она пишет музыку под псевдонимом <span class="accent">Сонюшо</span> и мечтает о сцене. Я просто рядом. И горжусь.</p>
     <p class="about-sign">— Саня</p>
   </div>
@@ -676,10 +675,10 @@
 
 <!-- МУЗЫКА (СОНЮШО) -->
 <section id="music">
-  <!-- Пентаграмма на фоне всего раздела -->
+  <!-- Пентаграмма на фоне всего раздела, сдвинута вверх -->
   <div class="music-pentagram-bg">
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <g fill="none" stroke="#cc0000" stroke-width="1">
+      <g fill="none" stroke="#cc0000" stroke-width="1.5">
         <path d="M100 10 L120 70 L185 70 L133 105 L152 168 L100 130 L48 168 L67 105 L15 70 L80 70 Z"/>
         <circle cx="100" cy="100" r="55"/>
       </g>
@@ -705,11 +704,11 @@
       <p style="color:var(--muted); font-size:14px;">Сонюшо — это Соня.</p>
       <div class="music-links">
         <a href="https://music.yandex.ru/album/39260635/track/145309683" target="_blank" class="music-link">
-          <span>Трек 1</span>
+          <span>Смерть</span>
           <span>Слушать на Яндекс.Музыке →</span>
         </a>
         <a href="https://music.yandex.ru/album/37838407/track/141962173" target="_blank" class="music-link">
-          <span>Трек 2</span>
+          <span>Убежим</span>
           <span>Слушать на Яндекс.Музыке →</span>
         </a>
       </div>
@@ -753,7 +752,7 @@
       <!-- Фото с подругой -->
       <img class="chron-img" src="Screenshot_20261029_184850_Telegram.jpg" alt="Ритуал с подругой" />
       <div class="chron-body">
-        <h3>Ритуалы с подругами</h3>
+        <h3>Ритуалы с подрунями</h3>
         <p>У нас есть лор с двумя её подругами. Проводим нешуточные магические обряды. Всё работает.</p>
         <div class="chron-date">Скоро</div>
       </div>
@@ -769,7 +768,7 @@
   <h2 class="sec-title">Книга ритуалов</h2>
   <p class="sec-sub">Нешуточные ритуалы. Работают.</p>
 
-  <!-- Коллаж -->
+  <!-- Коллаж показывается целиком -->
   <img class="ritual-photo" src="Picsart_26-10-29_20-50-40-378.jpg" alt="Ритуал" />
 
   <div class="ritual-box">
@@ -809,7 +808,6 @@
   <div class="logo">S&amp;S</div>
   <p>Соня и Саня. Хроники, музыка, ритуалы.</p>
   <p style="margin-top:16px;">Сонюшо: <a href="https://music.yandex.ru/album/39260635/track/145309683" target="_blank">Яндекс.Музыка</a> · Telegram: <a href="#">канал</a></p>
-  <p class="copy">S&amp;S, 2026</p>
 </footer>
 
 <script>
