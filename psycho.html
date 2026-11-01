@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S&S — Уголок детского психолога</title>
+  <meta name="description" content="UniHorney o' mine — уголок детского психолога S&S. Девять единорогов и голосование.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ================= ШАПКА ================= -->
+  <header class="site-header">
+    <div class="header-inner">
+      <svg class="pentagram" viewBox="0 0 100 100" fill="none" stroke="#e31722" stroke-width="2">
+        <circle cx="50" cy="50" r="46"/>
+        <polygon points="50,6 63,76 6,32 94,32 37,76"/>
+      </svg>
+      <h1 class="site-title">S<span class="amp">&</span>S</h1>
+      <p class="site-tagline">уголок детского психолога</p>
+      <p class="baphomet-mark">UniHorney o' mine</p>
+    </div>
+  </header>
+
+  <!-- ================= НАВИГАЦИЯ ================= -->
+  <nav class="main-nav">
+    <div class="nav-inner">
+      <a href="index.html">О нас</a>
+      <a href="index.html#sonusho">Сонюшо</a>
+      <a href="chronicles.html">Хроники (Алкаши / Свинарнии)</a>
+      <a href="psycho.html" class="active">Уголок детского психолога</a>
+      <a href="sharaban.html">Культурный Шарабанъ</a>
+      <a href="rituals.html">Книга ритуалов</a>
+      <a href="map.html">Карта заброшек</a>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- ================= ЗАГОЛОВОК + АРТ ================= -->
+    <section class="section violet">
+      <h2>UniHorney o' mine</h2>
+
+      <div class="grid grid-2">
+        <figure>
+          <img class="media" src="600402791416.jpg" alt="Арт психолога">
+          <figcaption class="media-caption">Арт</figcaption>
+        </figure>
+
+        <div>
+          <p>
+            Здесь мы разбираем детские травмы через <span class="accent-violet">эмодзи</span>.
+            Если ребёнок прислал 🦄 — это не значит, что он счастлив. Это значит, что он
+            просит помощи, но не знает, как её назвать.
+          </p>
+          <p>
+            <span class="accent-blue">Бадди</span> — наш внутренний голос. Он всегда рядом.
+            Он не осуждает. Он просто смотрит, как ты выбираешь единорога.
+          </p>
+          <p class="dim" style="font-size:0.85rem;">
+            * Сноска про Ино: Ино — это не диагноз, это состояние. Если ты встретил Ино —
+            ты уже в безопасности.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ГОЛОСОВАНИЕ ================= -->
+    <section class="section">
+      <h2>Выбери своего единорога</h2>
+      <p class="dim" style="margin-bottom:1.4rem;">Один голос — одна душа. Выбирай осознанно.</p>
+
+      <div class="grid grid-3" id="unicornGrid">
+
+        <div class="unicorn-card">
+          <img src="Гности.jpg" alt="Гности">
+          <p class="unicorn-name">Гности</p>
+          <p class="vote-count" data-count="gnosti">0 голосов</p>
+          <button class="btn btn-vote" data-id="gnosti">Голосовать</button>
+        </div>
+
+        <div class="unicorn-card">
+          <img src="СайберГоти.jpg" alt="СайберГоти">
+          <p class="unicorn-name">СайберГоти</p>
+          <p class="vote-count" data-count="cybergothi">0 голосов</p>
+          <button class="btn btn-vote" data-id="cybergothi">Голосовать</button>
+        </div>
+
+        <div class="unicorn-card">
+          <img src="Сигил.jpg" alt="Сигил">
+          <p class="unicorn-name">Сигил</p>
+          <p class="vote-count" data-count="sigil">0 голосов</p>
+          <button class="btn btn-vote" data-id="sigil">Голосовать</button>
+        </div>
+
+        <div class="unicorn-card">
+          <img src="Cleft.jpg" alt="Cleft">
+          <p class="unicorn-name">Cleft</p>
+          <p class="vote-count" data-count="cleft">0 голосов</p>
+          <button class="btn btn-vote" data-id="cleft">Голосовать</button>
+        </div>
+
+        <div class="unicorn-card">
+          <img src="UniPorn.jpg" alt="UniPorn">
+          <p class="unicorn-name">UniPorn</p>
+          <p class="vote-count" data-count="uniporn">0 голосов</p>
+          <button class="btn btn-vote" data-id="uniporn">Голосовать</button>
+        </div>
+
+        <div class="unicorn-card">
+          <img src="НяшаДаша.jpg" alt="НяшаДаша">
+          <p class="unicorn-name">НяшаДаша</p>
+          <p class="vote-count" data-count="nyashadasha">0 голосов</p>
+          <button class="btn btn-vote" data-id="nyashadasha">Голосовать</button>
+        </div>
+
+        <div class="unicorn-card">
+          <img src="MetaBoss.jpg" alt="MetaBoss">
+          <p class="unicorn-name">MetaBoss</p>
+          <p class="vote-count" data-count="metaboss">0 голосов</p>
+          <button class="btn btn-vote" data-id="metaboss">Голосовать</button>
+        </div>
+
+        <div class="unicorn-card">
+          <img src="Ibly.jpg" alt="Ibly">
+          <p class="unicorn-name">Ibly</p>
+          <p class="vote-count" data-count="ibly">0 голосов</p>
+          <button class="btn btn-vote" data-id="ibly">Голосовать</button>
+        </div>
+
+        <div class="unicorn-card">
+          <img src="Knightmare.jpg" alt="Knightmare">
+          <p class="unicorn-name">Knightmare</p>
+          <p class="vote-count" data-count="knightmare">0 голосов</p>
+          <button class="btn btn-vote" data-id="knightmare">Голосовать</button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= ФУТЕР ================= -->
+  <footer class="site-footer">
+    <div class="sigil">S&S · 18+ · MADE IN THE VOID</div>
+    <p>© 2026 S&S. Психолог не одобряет, но поддерживает.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

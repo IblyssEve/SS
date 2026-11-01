@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S&S — Книга ритуалов</title>
+  <meta name="description" content="Книга ритуалов S&S: коллаж, Ино и генератор ритуалов.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ================= ШАПКА ================= -->
+  <header class="site-header">
+    <div class="header-inner">
+      <svg class="pentagram" viewBox="0 0 100 100" fill="none" stroke="#e31722" stroke-width="2">
+        <circle cx="50" cy="50" r="46"/>
+        <polygon points="50,6 63,76 6,32 94,32 37,76"/>
+      </svg>
+      <h1 class="site-title">S<span class="amp">&</span>S</h1>
+      <p class="site-tagline">книга ритуалов</p>
+      <p class="baphomet-mark">Ино · Коллаж · Генератор</p>
+    </div>
+  </header>
+
+  <!-- ================= НАВИГАЦИЯ ================= -->
+  <nav class="main-nav">
+    <div class="nav-inner">
+      <a href="index.html">О нас</a>
+      <a href="index.html#sonusho">Сонюшо</a>
+      <a href="chronicles.html">Хроники (Алкаши / Свинарнии)</a>
+      <a href="psycho.html">Уголок детского психолога</a>
+      <a href="sharaban.html">Культурный Шарабанъ</a>
+      <a href="rituals.html" class="active">Книга ритуалов</a>
+      <a href="map.html">Карта заброшек</a>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- ================= КОЛЛАЖ + ТЕКСТ ПРО ИНО ================= -->
+    <section class="section violet">
+      <h2>Книга ритуалов</h2>
+
+      <figure>
+        <img class="media" src="Picsart_26-10-29_20-50-40-378.jpg" alt="Коллаж ритуалов">
+        <figcaption class="media-caption">коллаж из книги</figcaption>
+      </figure>
+
+      <p style="margin-top:1.4rem;">
+        <span class="accent-blue">Ино</span> — хранитель этой книги. Он не требует жертв,
+        он требует внимания. Каждый ритуал здесь — это маленький разговор с собой,
+        записанный на полях реальности.
+      </p>
+      <p class="dim">
+        Не произноси ритуалы вслух после полуночи. Или произноси — но тогда не удивляйся,
+        если Ино ответит.
+      </p>
+    </section>
+
+    <!-- ================= ГЕНЕРАТОР ================= -->
+    <section class="section">
+      <h2>Сгенерировать ритуал</h2>
+      <p class="dim" style="margin-bottom:1.4rem;">
+        Нажми кнопку — книга сама выберет ритуал из 78 возможных.
+      </p>
+
+      <button class="btn violet" id="ritualBtn" type="button">Сгенерировать ритуал</button>
+
+    </section>
+
+  </main>
+
+  <!-- ================= ФУТЕР ================= -->
+  <footer class="site-footer">
+    <div class="sigil">S&S · 18+ · MADE IN THE VOID</div>
+    <p>© 2026 S&S. Ритуалы согласованы с Ино.</p>
+  </footer>
+
+  <!-- rituals.js — готовый файл с 78 картами, не пересобираем -->
+  <script src="rituals.js"></script>
+
+</body>
+</html>      <div class="ritual-output" id="ritualOutput"></div>
